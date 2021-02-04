@@ -1,0 +1,28 @@
+﻿.footer-navigation {
+    list-style: none;
+    padding-left: 0px;
+    display: inline-block;
+    width: 100%;
+}
+
+    .footer-navigation li {
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .footer-navigation a {
+        padding: 10px;
+        color: #000000;
+        display: block;
+    }
+
+        .footer-navigation a:hover {
+            padding: 10px;
+            color: #ffffff;
+            background-color: #fac900;
+        }
+
+.test {
+    list-style: none;
+}
