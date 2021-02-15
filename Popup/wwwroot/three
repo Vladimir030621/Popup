@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+
+    <!--  
+    <script>
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+            camera.position.set(0, 10, 30);
+            var renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setClearColor(0x808080);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+            const color = 0xFFFFFF;
+            const intensity = 1;
+            const light = new THREE.DirectionalLight(color, intensity);
+            light.position.set(-1, 2, 4);
+            scene.add(light);
+
+            //const material = new THREE.MeshBasicMaterial( { color : 0xff0000 } );
+
+
+            // const shape = new THREE.Shape();
+            // shape.moveTo( -3, 7 );
+            // shape.lineTo( 3, 7);
+            // shape.bezierCurveTo(3, 7 , 4.5, 6.5, 5, 5);
+            // shape.lineTo( 5, -5);
+            // shape.bezierCurveTo(5, -5, 4.5, -6.5, 3, -7);
+            // shape.lineTo(-3, -7 );
+            // shape.bezierCurveTo(-3, -7, -4.5, -6.5, -5, -5);
+            // shape.lineTo( -5, 5);
+            // shape.bezierCurveTo(-5, 5, -4.5, 6.5, -3, 7);
+
+            
+            // const geometry = new THREE.ShapeGeometry( shape );
+            // const material = new THREE.MeshPhongMaterial({  color: 0x00ff00 } );
+            // const mesh = new THREE.Mesh( geometry, material ) ;
+            // scene.add( mesh );
+
+
+
+            const curve = new THREE.CatmullRomCurve3( [
+                // new THREE.Vector3( -10, 0, 10 ),
+                // new THREE.Vector3( -5, 5, 5 ),
+                // new THREE.Vector3( 0, 0, 0 ),
+                // new THREE.Vector3( 5, -5, 5 ),
+                // new THREE.Vector3( 10, 0, 10 )
+
+                new THREE.Vector3( 0, 0, 0 ),
+                new THREE.Vector3( 5, 0, 0 ),
+                new THREE.Vector3( 5, 5, 0 ),
+                new THREE.Vector3( 0, 5, 0 ),
+                new THREE.Vector3( 0, 0, 0 ),
+                new THREE.Vector3( 0, 0, 10 ),
+                new THREE.Vector3( 5, 0, 10 ),
+                new THREE.Vector3( 5, 5, 10 ),
+                new THREE.Vector3( 0, 5, 10 )
+                // new THREE.Vector3( 10, 0, 10 )
+            ] );
+            curve.closed = true;
+
+
+            const points = curve.getPoints( 40 );
+            const shape = new THREE.Shape( points );
+
+            const geometry = new THREE.ShapeGeometry( shape );
+            const material = new THREE.MeshNormalMaterial( { side: THREE.DoubleSide } );
+
+            const mesh = new THREE.Mesh( geometry, material );
+            scene.add( mesh );
+
+
+ 
+			const animate = function () {
+				requestAnimationFrame( animate );
+
+				// mesh.rotation.x += 0.01;
+				// mesh.rotation.y += 0.01;
+
+				renderer.render( scene, camera );
+			};
+
+			animate();  
+            
+    </script>    -->
+
+    <!-- <script>
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        1,
+        1000
+      );
+      camera.position.set(0, 5, 10);
+      var renderer = new THREE.WebGLRenderer({
+        antialias: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      scene.add(new THREE.GridHelper(10, 10, "white"));
+
+      var divisions = 100;
+      var points = [
+        new THREE.Vector3(-5, 5, 0),
+        new THREE.Vector3(-2, 2, 3),
+        new THREE.Vector3(1, 3, 2),
+        new THREE.Vector3(3, 5, -3),
+        new THREE.Vector3(-3, 4, -2),
+      ];
+
+      var curve = new THREE.CatmullRomCurve3(points);
+      curve.closed = true;
+      var upperPoints = curve.getPoints(divisions);
+      var lowerPoints = upperPoints.map((p) => {
+        return new THREE.Vector3(p.x, 0, p.z);
+      });
+      var upperGeom = new THREE.BufferGeometry().setFromPoints(upperPoints);
+      var lowerGeom = new THREE.BufferGeometry().setFromPoints(lowerPoints);
+
+      var cylGeom = new THREE.CylinderBufferGeometry(
+        1,
+        1,
+        1,
+        divisions,
+        1,
+        true
+      ); // create an open-ended cylinder
+      cylGeom.attributes.position.array.set(
+        upperGeom.attributes.position.array,
+        0
+      ); // set coordinates for upper points
+      cylGeom.attributes.position.array.set(
+        lowerGeom.attributes.position.array,
+        (divisions + 1) * 3
+      ); // set coordinates of lower points
+      cylGeom.computeVertexNormals();
+
+      var result = new THREE.Mesh(
+        cylGeom,
+        new THREE.MeshBasicMaterial({
+          color: 0xaaaaaa,
+          wireframe: true,
+        })
+      );
+      scene.add(result);
+
+      var upperLine = new THREE.Line(
+        upperGeom,
+        new THREE.LineBasicMaterial({
+          color: "aqua",
+        })
+      );
+      scene.add(upperLine);
+      var lowerLine = new THREE.Line(
+        lowerGeom,
+        new THREE.LineBasicMaterial({
+          color: "yellow",
+        })
+      );
+      scene.add(lowerLine);
+
+      renderer.setAnimationLoop(() => {
+        renderer.render(scene, camera);
+      });
+    </script> -->
+
+    <!-- <script>
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        1,
+        1000
+      );
+      camera.position.set(0, 10, 300);
+      var renderer = new THREE.WebGLRenderer({
+        antialias: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      var light = new THREE.DirectionalLight(0xffffff, 0.5);
+      light.position.setScalar(100);
+      scene.add(light);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+      var closedSpline = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-60, -100, 0),
+        new THREE.Vector3(-60, 20, 0),
+        new THREE.Vector3(-60, 120, 0),
+        new THREE.Vector3(60, 120, 0),
+        new THREE.Vector3(60, -100, 0),
+      ]);
+      closedSpline.curveType = "catmullrom";
+      closedSpline.closed = true;
+
+      var closedSpline1 = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-50, -90, 0),
+        new THREE.Vector3(-50, 10, 0),
+        new THREE.Vector3(-50, 110, 0),
+        new THREE.Vector3(50, 110, 0),
+        new THREE.Vector3(50, -90, 0),
+      ]);
+      closedSpline1.curveType = "catmullrom";
+      closedSpline1.closed = true;
+
+      var tubeGeometry = new THREE.TubeBufferGeometry(
+        closedSpline,
+        100,
+        1,
+        5,
+        true
+      );
+
+      var material = new THREE.MeshLambertMaterial({
+        color: 0xb00000,
+        wireframe: false,
+      });
+      var mesh = new THREE.Mesh(tubeGeometry, material);
+      scene.add(mesh);
+
+      var tubeGeometry1 = new THREE.TubeBufferGeometry(
+        closedSpline1,
+        100,
+        1,
+        5,
+        true
+      );
+
+      var material1 = new THREE.MeshLambertMaterial({
+        color: 0xb00000,
+        wireframe: false,
+      });
+      var mesh1 = new THREE.Mesh(tubeGeometry1, material1);
+      scene.add(mesh1);
+
+      // magic starts here
+      var shape = new THREE.Shape(closedSpline.getPoints(100)); // make a shape
+      shape.holes.push(new THREE.Path(closedSpline1.getPoints(100))); // add a hole
+      var shapeGeometry = new THREE.ShapeGeometry(shape); // create a geometry
+      var track = new THREE.Mesh(
+        shapeGeometry,
+        new THREE.MeshLambertMaterial({
+          color: "yellow",
+          wireframe: false,
+        })
+      ); // create a track from the geometry
+      scene.add(track);
+
+      render();
+
+      function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+    </script> -->
+
+    <!-- <script>
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        1,
+        1000
+      );
+      camera.position.set(0, 10, 300);
+      var renderer = new THREE.WebGLRenderer({
+        antialias: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      var light = new THREE.DirectionalLight(0xffffff, 0.5);
+      light.position.setScalar(100);
+      scene.add(light);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+      var closedSpline = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-60, -100, -10),
+        new THREE.Vector3(-60, 20, 0),
+        new THREE.Vector3(-60, 120, -20),
+        new THREE.Vector3(60, 120, 0),
+        new THREE.Vector3(60, -100, 10),
+      ]);
+      closedSpline.curveType = "catmullrom";
+      closedSpline.closed = true;
+
+      var closedSpline1 = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-50, -90, -10),
+        new THREE.Vector3(-50, 10, 0),
+        new THREE.Vector3(-50, 110, -20),
+        new THREE.Vector3(50, 110, 0),
+        new THREE.Vector3(50, -90, 10),
+      ]);
+      closedSpline1.curveType = "catmullrom";
+      closedSpline1.closed = true;
+
+      var tubeGeometry = new THREE.TubeBufferGeometry(
+        closedSpline,
+        100,
+        1,
+        5,
+        true
+      );
+
+      var material = new THREE.MeshLambertMaterial({
+        color: 0xb00000,
+        wireframe: false,
+      });
+      var mesh = new THREE.Mesh(tubeGeometry, material);
+      scene.add(mesh);
+
+      var tubeGeometry1 = new THREE.TubeBufferGeometry(
+        closedSpline1,
+        100,
+        1,
+        5,
+        true
+      );
+
+      var material1 = new THREE.MeshLambertMaterial({
+        color: 0xb00000,
+        wireframe: false,
+      });
+      var mesh1 = new THREE.Mesh(tubeGeometry1, material1);
+      scene.add(mesh1);
+
+      // magic starts here
+      var points1 = closedSpline.getPoints(100); // get the first set of points
+      var points2 = closedSpline1.getPoints(100); // get the second set of points
+      var allPoints = points1.concat(points2); // concatenate them
+
+      var planeGeom = new THREE.PlaneGeometry(1, 1, 100, 1); // create a plane geometry
+      planeGeom.vertices = allPoints; // replace its vertices with the previously concatenated array of points
+
+      planeGeom.computeFaceNormals();
+      planeGeom.computeVertexNormals();
+
+      var track = new THREE.Mesh(
+        planeGeom,
+        new THREE.MeshLambertMaterial({
+          color: "yellow",
+          wireframe: false,
+        })
+      );
+      scene.add(track);
+
+      render();
+
+      function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+    </script> -->
+
+    <!-- <script>
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        1,
+        1000
+      );
+      camera.position.set(0, 10, 30);
+      var renderer = new THREE.WebGLRenderer({
+        antialias: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x808080);
+      document.body.appendChild(renderer.domElement);
+
+      var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      var light = new THREE.DirectionalLight(0xffffff, 0.5);
+      light.position.setScalar(100);
+      scene.add(light);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+      var closedSpline = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-60, -100, 60),
+        new THREE.Vector3(-60, 20, 60),
+        new THREE.Vector3(-60, 120, 60),
+        new THREE.Vector3(60, 20, -60),
+        new THREE.Vector3(60, -100, -60),
+      ]);
+      closedSpline.type = "catmullrom";
+      closedSpline.closed = true;
+
+      // Set up settings for later extrusion
+      var extrudeSettings = {
+        steps: 100,
+        bevelEnabled: false,
+        extrudePath: closedSpline,
+      };
+
+      // Define a triangle
+      var pts = [],
+        count = 3;
+      for (var i = 0; i < count; i++) {
+        var l = 20;
+        var a = ((2 * i) / count) * Math.PI;
+        pts.push(new THREE.Vector2(Math.cos(a) * l, Math.sin(a) * l));
+      }
+      var shape = new THREE.Shape(pts);
+
+      // Extrude the triangle along the CatmullRom curve
+      var geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+      var material = new THREE.MeshLambertMaterial({
+        color: 0xb00000,
+        wireframe: false,
+      });
+
+      // Create mesh with the resulting geometry
+      var mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      render();
+
+      function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+    </script> -->
+
+    <script>
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        1,
+        1000
+      );
+      camera.position.set(0, 10, 30);
+      var renderer = new THREE.WebGLRenderer({
+        antialias: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x808080);
+      document.body.appendChild(renderer.domElement);
+
+      var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      var light = new THREE.DirectionalLight(0xffffff, 0.5);
+      light.position.setScalar(100);
+      scene.add(light);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0);
+    shape.lineTo(8, 0);
+    shape.bezierCurveTo(8, 0, 9.5, 0.5, 10, 2);
+    shape.lineTo(10, 8);
+    shape.bezierCurveTo(10, 8, 9.5, 9.5, 8, 10);
+    shape.lineTo(0, 10);
+    shape.lineTo(0, 0);
+
+
+      const extrudeSettings = {
+        steps: 1,
+        depth: 1,
+        bevelEnabled: false,
+        bevelThickness: 1,
+        bevelSize: 1,
+        bevelOffset: 0,
+        bevelSegments: 1,
+      };
+
+      const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+      const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      render();
+
+      function render() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+    </script>
+  </body>
+</html>
