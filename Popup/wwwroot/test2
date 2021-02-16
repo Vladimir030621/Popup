@@ -113,6 +113,8 @@
       const material1 = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
       const material2 = new THREE.MeshPhongMaterial({ color: 0xff0000 });
       const material3 = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+      const material4 = new THREE.MeshPhongMaterial({ color: 0xf1f1f1 });
+      const material5 = new THREE.MeshPhongMaterial({ color: 0x00ffff });
 
 
 
@@ -149,9 +151,64 @@
       randB.lineTo(7, 7);
       randB.bezierCurveTo(7, 7, 7.75, 7.25, 8, 8);
       randB.lineTo(8, 9);
-      randB.bezierCurveTo(8, 9, 8.25, 9.25, 7, 10);
+      randB.bezierCurveTo(8, 9, 7.75, 9.75, 7, 10);
       randB.lineTo(5, 10);
       randB.lineTo(5, 7);
+
+      const randC = new THREE.Shape();
+      randC.moveTo(5, -7);
+      randC.lineTo(3, -7);
+      randC.bezierCurveTo(3, -7, 2.25, -7.25, 2, -8);
+      randC.lineTo(2, -9);
+      randC.bezierCurveTo(2, -9, 2.25, -9.75, 3, -10);
+      randC.lineTo(5, -10);
+      randC.lineTo(5, -7);
+
+      const randD = new THREE.Shape();
+      randD.moveTo(-5, -7);
+      randD.lineTo(-7, -7);
+      randD.bezierCurveTo(-7, -7, -7.75, -6.75, -8, -6);
+      randD.lineTo(-8, -5);
+      randD.bezierCurveTo(-8, -5, -7.75, -4.25, -7, -4);
+      randD.lineTo(-5, -4);
+      randD.lineTo(-5, -7);
+
+
+      // const randA = new THREE.Shape();
+      // randA.moveTo(-5, 7);
+      // randA.lineTo(-3, 7);
+      // randA.lineTo(-2, 8);
+      // randA.lineTo(-2, 9);
+      // randA.lineTo(-3, 10);
+      // randA.lineTo(-5, 10);
+      // randA.lineTo(-5, 7);
+
+      // const randB = new THREE.Shape();
+      // randB.moveTo(5, 7);
+      // randB.lineTo(7, 7);
+      // randB.lineTo(8, 8);
+      // randB.lineTo(8, 9);
+      // randB.lineTo(7, 10);
+      // randB.lineTo(5, 10);
+      // randB.lineTo(5, 7);
+
+      // const randC = new THREE.Shape();
+      // randC.moveTo(5, -7);
+      // randC.lineTo(3, -7);
+      // randC.lineTo(2, -8);
+      // randC.lineTo(2, -9);
+      // randC.lineTo(3, -10);
+      // randC.lineTo(5, -10);
+      // randC.lineTo(5, -7);
+
+      // const randD = new THREE.Shape();
+      // randD.moveTo(-5, -7);
+      // randD.lineTo(-7, -7);
+      // randD.lineTo(-8, -6);
+      // randD.lineTo(-8, -5);
+      // randD.lineTo(-7, -4);
+      // randD.lineTo(-5, -4);
+      // randD.lineTo(-5, -7);
 
 
 
@@ -173,6 +230,18 @@
         bevelEnabled: false
       };
 
+      const extrudeSettings4 = {
+        steps: 1,
+        depth: 10,
+        bevelEnabled: false
+      };
+      
+      const extrudeSettings5 = {
+        steps: 1,
+        depth: 14,
+        bevelEnabled: false
+      };
+      
       const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings1);
       const mesh = new THREE.Mesh(geometry, material1);
       scene.add(mesh);
@@ -193,6 +262,21 @@
       randBmesh.position.z = -7;
       scene.add(randBmesh);
 
+      const randCGeometry = new THREE.ExtrudeGeometry(randC, extrudeSettings4);
+      const randCmesh = new THREE.Mesh(randCGeometry, material4);
+      randCmesh.rotation.y = Math.PI / 2;
+      randCmesh.rotation.z = Math.PI / 2;
+      randCmesh.position.x = -5;
+      randCmesh.position.z = 10;
+      randCmesh.position.y = -12;
+      scene.add(randCmesh);
+
+      const randDGeometry = new THREE.ExtrudeGeometry(randD, extrudeSettings5);
+      const randDmesh = new THREE.Mesh(randDGeometry, material5);
+      randDmesh.rotation.x = Math.PI / 2;
+      randDmesh.position.y = 7;
+      randDmesh.position.z = 7;
+      scene.add(randDmesh);
 
       render();
 
